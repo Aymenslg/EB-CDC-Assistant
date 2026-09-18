@@ -1,0 +1,87 @@
+@import "tailwindcss";
+
+:root {
+  --background: #F5F7FA;
+  --foreground: #231F20;
+
+  --atos-blue: #0066A1;
+  --atos-blue-dark: #004D7A;
+  --atos-navy: #0A2540;
+  --atos-green: #00B2A9;
+  --atos-thunder: #231F20;
+
+  --surface: #ffffff;
+  --border-subtle: #E2E8F0;
+  --border-hairline: #F1F1F1;
+  --border-strong: #CBD5E1;
+  --text-secondary: #6B7280;
+  --text-muted: #9CA3AF;
+
+  --statut-brouillon-bg: #F1EFE8;
+  --statut-brouillon-text: #444441;
+  --statut-en-revue-bg: #FAEEDA;
+  --statut-en-revue-text: #854F0B;
+  --statut-approuve-bg: #E1F5EE;
+  --statut-approuve-text: #085041;
+  --statut-rejete-bg: #FCEBEB;
+  --statut-rejete-text: #791F1F;
+}
+
+@theme inline {
+  --font-sans: var(--font-inter);
+  --font-mono: var(--font-mono);
+
+  --color-background: var(--background);
+  --color-foreground: var(--foreground);
+  --color-atos-blue: var(--atos-blue);
+  --color-atos-blue-dark: var(--atos-blue-dark);
+  --color-atos-navy: var(--atos-navy);
+  --color-atos-green: var(--atos-green);
+  --color-atos-thunder: var(--atos-thunder);
+  --color-surface: var(--surface);
+  --color-border-subtle: var(--border-subtle);
+  --color-border-hairline: var(--border-hairline);
+  --color-border-strong: var(--border-strong);
+  --color-text-secondary: var(--text-secondary);
+  --color-text-muted: var(--text-muted);
+
+  --color-statut-brouillon-bg: var(--statut-brouillon-bg);
+  --color-statut-brouillon-text: var(--statut-brouillon-text);
+  --color-statut-en-revue-bg: var(--statut-en-revue-bg);
+  --color-statut-en-revue-text: var(--statut-en-revue-text);
+  --color-statut-approuve-bg: var(--statut-approuve-bg);
+  --color-statut-approuve-text: var(--statut-approuve-text);
+  --color-statut-rejete-bg: var(--statut-rejete-bg);
+  --color-statut-rejete-text: var(--statut-rejete-text);
+
+  /* alias sémantiques utilisés par StatsCards / WorkflowStepper / états d'erreur */
+  --color-success-bg: var(--statut-approuve-bg);
+  --color-success-text: var(--statut-approuve-text);
+  --color-warning-bg: var(--statut-en-revue-bg);
+  --color-warning-text: var(--statut-en-revue-text);
+  --color-danger-bg: var(--statut-rejete-bg);
+  --color-danger-text: var(--statut-rejete-text);
+  --color-neutral-bg: var(--statut-brouillon-bg);
+  --color-neutral-text: var(--statut-brouillon-text);
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-inter), ui-sans-serif, system-ui, sans-serif;
+}
+
+* {
+  border-color: var(--border-subtle);
+}
+
+@keyframes dot-bounce {
+  0%, 80%, 100% {
+    transform: translateY(0);
+    opacity: 0.4;
+  }
+  40% {
+    transform: translateY(-3px);
+    opacity: 1;
+  }
+}
