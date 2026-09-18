@@ -1,0 +1,13 @@
+fastapi
+uvicorn
+langgraph
+langchain
+langchain-community
+sentence-transformers
+faiss-cpu
+pymupdf
+python-multipart
+pydantic
+requests
+pydantic-settings==2.14.2
+langchain-text-splitters==1.1.2

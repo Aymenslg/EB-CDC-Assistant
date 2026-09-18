@@ -1,0 +1,315 @@
+<!DOCTYPE html>
+<html xmlns:th="http://www.thymeleaf.org" lang="fr">
+<head>
+    <meta charset="UTF-8"/>
+    <title th:text="${titre}">Cahier des Charges</title>
+    <style>
+
+        /* ============================================================
+           ATOS — CDC PDF TEMPLATE
+           Palette : navy #0A2540 / bleu #0066A1 / gris ardoise #4A5568
+           Compatible openhtmltopdf : pas de flexbox/grid, tables + floats
+           ============================================================ */
+
+        @page {
+            size: A4;
+            margin: 0;
+        }
+
+        @page content {
+            size: A4;
+            margin: 100px 55px 70px 55px;
+
+            @bottom-left {
+                content: "Cahier des Charges — Confidentiel";
+                font-family: "Helvetica", sans-serif;
+                font-size: 8px;
+                color: #8A94A6;
+            }
+            @bottom-right {
+                content: "Page " counter(page) " / " counter(pages);
+                font-family: "Helvetica", sans-serif;
+                font-size: 8px;
+                color: #8A94A6;
+            }
+        }
+
+        * { box-sizing: border-box; }
+
+        body {
+            font-family: "PT Serif", "Times New Roman", serif;
+            color: #23262B;
+            font-size: 10.5px;
+            line-height: 1.55;
+            margin: 0;
+            padding: 0;
+        }
+
+        /* ---------------- COVER PAGE ---------------- */
+
+        .cover {
+            page: cover;
+            width: 100%;
+            height: 297mm;
+            position: relative;
+            background-color: #0A2540;
+            margin: 0;
+            padding: 0;
+        }
+
+        .cover-band {
+            position: absolute;
+            top: 0;
+            left: 0;
+            width: 14px;
+            height: 297mm;
+            background-color: #0066A1;
+        }
+
+        .cover-inner {
+            position: absolute;
+            top: 90px;
+            left: 75px;
+            right: 75px;
+        }
+
+        .cover-eyebrow {
+            font-family: "Helvetica", sans-serif;
+            font-size: 11px;
+            letter-spacing: 3px;
+            color: #6FA8DC;
+            text-transform: uppercase;
+            margin-bottom: 28px;
+        }
+
+        .cover-title {
+            font-family: "Helvetica", sans-serif;
+            font-size: 30px;
+            font-weight: bold;
+            color: #FFFFFF;
+            line-height: 1.25;
+            margin-bottom: 18px;
+        }
+
+        .cover-rule {
+            width: 60px;
+            height: 3px;
+            background-color: #0066A1;
+            margin: 24px 0 24px 0;
+        }
+
+        .cover-subtitle {
+            font-family: "Helvetica", sans-serif;
+            font-size: 12px;
+            color: #C3CCDA;
+        }
+
+        .cover-meta {
+            position: absolute;
+            bottom: 70px;
+            left: 75px;
+            right: 75px;
+            font-family: "Helvetica", sans-serif;
+            font-size: 9px;
+            color: #8FA3BF;
+            border-top: 1px solid #1D3A5F;
+            padding-top: 16px;
+        }
+
+        .cover-meta table { width: 100%; border-collapse: collapse; }
+        .cover-meta td { padding: 2px 0; }
+        .cover-meta .label {
+            text-transform: uppercase;
+            letter-spacing: 1px;
+            color: #5F7A9C;
+            width: 140px;
+        }
+
+        .cover-brand {
+            position: absolute;
+            top: 40px;
+            right: 55px;
+            font-family: "Helvetica", sans-serif;
+            font-size: 13px;
+            font-weight: bold;
+            letter-spacing: 2px;
+            color: #FFFFFF;
+        }
+        .cover-brand span { color: #0066A1; }
+
+        /* ---------------- CONTENT PAGES ---------------- */
+
+        .content {
+            page: content;
+        }
+
+        .toc {
+            margin-bottom: 30px;
+            padding-bottom: 10px;
+            border-bottom: 1px solid #D8DEE7;
+            page-break-after: always;
+        }
+        .toc-title {
+            font-family: "Helvetica", sans-serif;
+            font-size: 10px;
+            text-transform: uppercase;
+            letter-spacing: 2px;
+            color: #0066A1;
+            margin-bottom: 12px;
+        }
+        .toc-item {
+            font-family: "Helvetica", sans-serif;
+            font-size: 9.5px;
+            color: #4A5568;
+            padding: 3px 0;
+            border-bottom: 1px dotted #E1E6ED;
+        }
+        .toc-item .num {
+            color: #0066A1;
+            font-weight: bold;
+            width: 22px;
+            display: inline-block;
+        }
+
+        .section {
+            margin-bottom: 26px;
+            page-break-inside: avoid;
+        }
+
+        .section-header {
+            width: 100%;
+            border-bottom: 2px solid #0066A1;
+            padding-bottom: 6px;
+            margin-bottom: 12px;
+        }
+
+        .section-num {
+            font-family: "Helvetica", sans-serif;
+            font-size: 9px;
+            font-weight: bold;
+            color: #FFFFFF;
+            background-color: #0066A1;
+            padding: 3px 8px;
+            display: inline-block;
+            margin-right: 8px;
+        }
+
+        .section-title {
+            font-family: "Helvetica", sans-serif;
+            font-size: 13.5px;
+            font-weight: bold;
+            color: #0A2540;
+            letter-spacing: 0.3px;
+        }
+
+        .section-body p {
+            margin: 0 0 8px 0;
+            text-align: justify;
+            color: #2D3340;
+        }
+
+        .section-body .bullet-line {
+            position: relative;
+            padding-left: 16px;
+            margin-bottom: 6px;
+            color: #2D3340;
+            text-align: left;
+        }
+
+        .section-body .bullet-line:before {
+            content: "—";
+            position: absolute;
+            left: 0;
+            color: #0066A1;
+            font-weight: bold;
+        }
+
+        .header-band {
+            position: running(headerBand);
+        }
+
+        .running-header {
+            font-family: "Helvetica", sans-serif;
+            font-size: 8px;
+            letter-spacing: 1.5px;
+            text-transform: uppercase;
+            color: #0066A1;
+        }
+
+    </style>
+</head>
+<body>
+
+<!-- ================= COVER PAGE ================= -->
+<div class="cover">
+    <div class="cover-band"></div>
+    <div class="cover-brand">ATOS<span> | CDC</span></div>
+
+    <div class="cover-inner">
+        <div class="cover-eyebrow">Cahier des Charges</div>
+        <div class="cover-title" th:text="${titre}">Titre du projet</div>
+        <div class="cover-rule"></div>
+        <div class="cover-subtitle">Document généré et validé selon le processus interne de gestion des besoins</div>
+    </div>
+
+    <div class="cover-meta">
+        <table>
+            <tr>
+                <td class="label">Référence</td>
+                <td th:text="${reference}">CDC-000</td>
+            </tr>
+            <tr>
+                <td class="label">Date de création</td>
+                <td th:text="${createdDate}">01/01/2026</td>
+            </tr>
+            <tr>
+                <td class="label">Dernière mise à jour</td>
+                <td th:text="${updatedDate}">—</td>
+            </tr>
+            <tr>
+                <td class="label">Statut</td>
+                <td th:text="${statutLabel}" th:class="'statut-' + ${statutClass}">Brouillon</td>
+            </tr>
+            <tr>
+                <td class="label">Génération</td>
+                <td th:text="${generatedDate}">Généré le 01/01/2026</td>
+            </tr>
+            <tr>
+                <td class="label">Classification</td>
+                <td>Usage interne — Atos Maroc</td>
+            </tr>
+        </table>
+    </div>
+</div>
+
+<!-- ================= CONTENT PAGES ================= -->
+<div class="content">
+
+    <div class="toc">
+        <div class="toc-title">Sommaire</div>
+        <div class="toc-item" th:each="section, iter : ${sections}">
+            <span class="num" th:text="${#numbers.formatInteger(iter.index + 1, 2)}">01</span>
+            <span th:text="${section.titre}">Titre de section</span>
+        </div>
+    </div>
+
+    <div class="section" th:each="section, iter : ${sections}">
+        <div class="section-header">
+            <span class="section-num" th:text="${#numbers.formatInteger(iter.index + 1, 2)}">01</span>
+            <span class="section-title" th:text="${section.titre}">Titre de section</span>
+        </div>
+        <div class="section-body">
+            <th:block th:each="paragraphe : ${section.paragraphes}">
+                <div class="bullet-line"
+                     th:if="${#strings.startsWith(paragraphe, '•  ')}"
+                     th:text="${#strings.replace(paragraphe, '•  ', '')}">Point de la liste</div>
+                <p th:unless="${#strings.startsWith(paragraphe, '•  ')}"
+                   th:text="${paragraphe}">Paragraphe de la section.</p>
+            </th:block>
+        </div>
+    </div>
+
+</div>
+
+</body>
+</html>
